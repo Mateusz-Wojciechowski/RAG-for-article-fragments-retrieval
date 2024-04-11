@@ -15,8 +15,3 @@ def create_embedding_model():
 
     return embeddings
 
-
-def retrieve_fragment(retriever, embedding_model, question):
-    embedded_question = embedding_model.embed_query(question)
-    search_docs = retriever.get_relevant_documents(embedded_question)
-    return search_docs.page_content[0]
