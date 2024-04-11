@@ -1,5 +1,5 @@
 from langchain_community.document_loaders.csv_loader import CSVLoader
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from functionalities import create_embedding_model
 from langchain_community.vectorstores import FAISS
 from CustomSplitter import CustomTextSplitter
 
@@ -13,14 +13,8 @@ text_splitter = CustomTextSplitter(threshold=0.6)
 docs = text_splitter.split_documents(string_text)
 
 # creating embedding model
-model_kwargs = {'device': 'cpu'}
-encode_kwargs = {'normalize_embeddings': False}
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-l6-v2",
-    model_kwargs=model_kwargs,
-    encode_kwargs=encode_kwargs
-)
+embedding_model = create_embedding_model()
 
 # creating and saving db
-db = FAISS.from_texts(docs, embeddings)
+db = FAISS.from_texts(docs, embedding_model)
 db.save_local("faiss_index")
